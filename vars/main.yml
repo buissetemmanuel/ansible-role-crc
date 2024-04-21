@@ -40,5 +40,6 @@ crc_download_file_name: "crc-linux-amd64.tar.xz"
 crc_download_url: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/{{ crc_version }}/{{ crc_download_file_name }}"
 crc_download_url_checksum: "sha256:{{ crc_download_url }}.sha256"
 
-crc_ocp_download_url: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ crc_ocp_version }}/openshift-client-linux-{{ crc_ocp_version }}.tar.gz"
+crc_ocp_download_file_name: "openshift-client-linux-{{ crc_ocp_version }}.tar.gz"
+crc_ocp_download_url: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ crc_ocp_version }}/{{ crc_ocp_download_file_name }}"
 crc_ocp_download_url_checksum: "sha256:https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ crc_ocp_version }}/sha256sum.txt"
