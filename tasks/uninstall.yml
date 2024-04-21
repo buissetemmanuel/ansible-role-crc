@@ -7,5 +7,8 @@
 - name: "{{ crc_mode }} | crc"
   ansible.builtin.include_tasks: crc.yml
 
-- name: "{{ crc_mode }} | directories"
+- name: "{{ crc_mode }} | crc | directories"
   ansible.builtin.include_tasks: directories.yml
+
+- name: "{{ crc_mode }} | crc | users"
+  ansible.builtin.include_tasks: users.yml
