@@ -1,5 +1,7 @@
 ---
 
+crc_state: present
+
 crc_version: 2.34.1
 crc_ocp_version: 4.15.9
 
