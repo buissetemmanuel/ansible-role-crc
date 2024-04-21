@@ -35,6 +35,7 @@ crc_directories_mandatories:
 crc_files_state: "{{ 'file' if crc_state == 'present' else 'absent' }}"
 crc_files_mode: '0640'
 
+crc_download_folder_name: "crc-linux-{{ crc_version }}-amd64"
 crc_download_file_name: "crc-linux-amd64.tar.xz"
 crc_download_url: "https://mirror.openshift.com/pub/openshift-v4/clients/crc/{{ crc_version }}/{{ crc_download_file_name }}"
 crc_download_url_checksum: "sha256:{{ crc_download_url }}.sha256"

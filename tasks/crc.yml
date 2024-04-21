@@ -11,15 +11,21 @@
     group: root
     checksum: "{{ crc_download_url_checksum }}"
 
-- name: "{{ crc_mode }} | crc | unarchive and put it in /usr/local/bin"
+- name: "{{ crc_mode }} | crc | unarchive"
   become: true
   when: not ansible_check_mode
   ansible.builtin.unarchive:
     src: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
-    dest: /usr/local/bin
+    dest: "{{ crc_tmp_dir }}"
     remote_src: yes
-    exclude:
-      - "LICENSE"
+
+- name: "{{ crc_mode }} | crc | put binary in /usr/local/bin"
+  become: true
+  when: not ansible_check_mode
+  ansible.builtin.file:
+    src: "{{ crc_tmp_dir }}/{{ crc_download_folder_name }}/crc"
+    dest: /usr/local/bin
+    remote_src: true
 
 - name: "{{ crc_mode }} | crc | check installed"
   become: true
