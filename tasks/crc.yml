@@ -11,7 +11,7 @@
     group: root
     checksum: "{{ crc_download_url_checksum }}"
 
-- name: "{{ crc_mode }} | crc | unarchive and put it in {{ crc_bin_dir }}"
+- name: "{{ crc_mode }} | crc | unarchive and put it in /usr/local/bin"
   become: true
   when: not ansible_check_mode
   ansible.builtin.unarchive:
