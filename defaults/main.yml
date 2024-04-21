@@ -5,6 +5,8 @@ crc_state: present
 crc_version: 2.34.1
 crc_ocp_version: 4.15.9
 
+crc_directories: []
+
 pull_secret_path: /tmp/pull-secert.txt
 pull_secret_content: |
   changeme
