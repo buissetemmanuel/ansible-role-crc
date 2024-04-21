@@ -65,4 +65,4 @@
   become: true
   ansible.builtin.command: kubectl version
   register: __crc_kubectl_install_status
-  changed_when: __crc_kubectl_install_status.rc == 1
+  changed_when: __crc_kubectl_install_status.rc != 1
