@@ -1,0 +1,11 @@
+---
+
+- name: Uninstall (crc_mode fact)
+  ansible.builtin.set_fact:
+    crc_mode: "Uninstall"
+
+- name: "{{ crc_mode }} | crc"
+  ansible.builtin.include_tasks: crc.yml
+
+- name: "{{ crc_mode }} | directories"
+  ansible.builtin.include_tasks: directories.yml

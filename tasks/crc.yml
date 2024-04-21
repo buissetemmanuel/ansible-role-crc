@@ -1,0 +1,52 @@
+---
+
+- name: "{{ crc_mode }} | crc | download and install Code Ready Container with checksum control"
+  become: true
+  when: not ansible_check_mode
+  ansible.builtin.get_url:
+    url: "{{ crc_download_url }}"
+    dest: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
+    mode: "0755"
+    owner: root
+    group: root
+    checksum: "{{ crc_download_url_checksum }}"
+
+- name: "{{ crc_mode }} | crc | unarchive and put it in {{ crc_bin_dir }}"
+  become: true
+  when: not ansible_check_mode
+  ansible.builtin.unarchive:
+    src: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: "{{ crc_mode }} | crc | check installed"
+  ansible.builtin.command: crc -h
+  register: __crc_install_status
+  changed_when: __crc_install_status.rc != 2
+
+- name: "{{ crc_mode }} | crc | ocp and kubectl | download and install Openshift Client and Kubernetes Client with checksum control"
+  become: true
+  when: not ansible_check_mode
+  ansible.builtin.get_url:
+    url: "{{ crc_ocp_download_url }}"
+    dest: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
+    mode: "0755"
+    owner: root
+    group: root
+    checksum: "{{ crc_ocp_download_url_checksum }}"
+
+- name: "{{ crc_mode }} | crc | ocp and kubectl | unarchive and put it in {{ crc_bin_dir }}"
+  become: true
+  when: not ansible_check_mode
+  ansible.builtin.unarchive:
+    src: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
+    dest: /usr/local/bin
+    remote_src: yes
+    exclude:
+      - "README.md"
+
+# TODO for oc and kubectl
+#- name: "{{ crc_mode }} | crc | ocp and kubectl | check installed"
+#  ansible.builtin.command: oc -h
+#  register: __crc_install_status
+#  changed_when: __crc_install_status.rc != 2
