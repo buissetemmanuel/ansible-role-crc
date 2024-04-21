@@ -8,9 +8,6 @@
     mode: "{{ directory.mode if directory.mode is defined else crc_directories_mode }}"
     owner: "{{ directory.owner }}"
     group: "{{ directory.group }}"
-    seuser: system_u
-    serole: object_r
-    setype: crc_file_t
   loop: "{{ crc_directories_mandatories + crc_directories }}"
   loop_control:
     loop_var: directory
