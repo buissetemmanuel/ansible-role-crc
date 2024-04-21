@@ -20,6 +20,7 @@
     remote_src: yes
 
 - name: "{{ crc_mode }} | crc | check installed"
+  become: true
   ansible.builtin.command: crc -h
   register: __crc_install_status
   changed_when: __crc_install_status.rc != 2
