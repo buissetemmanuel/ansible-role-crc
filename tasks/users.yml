@@ -1,7 +1,7 @@
 ---
 
 - name: "{{ crc_mode }} | crc | users | get crc_user_owner_info"
-  when: infra_state == 'present'
+  when: crc_state == 'present'
   ansible.builtin.user:
     name: "{{ crc_user_owner }}"
   check_mode: true
