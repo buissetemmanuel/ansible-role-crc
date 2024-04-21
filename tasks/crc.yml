@@ -61,6 +61,10 @@
   changed_when: __crc_ocp_install_status.rc == 0
 
 - name: "{{ crc_mode }} | crc | kubectl | check installed"
+  become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
   ansible.builtin.command: kubectl version
   register: __crc_kubectl_install_status
   changed_when: __crc_kubectl_install_status.rc == 1
