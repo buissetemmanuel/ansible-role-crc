@@ -18,6 +18,8 @@
     src: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
     dest: /usr/local/bin
     remote_src: yes
+    exclude:
+      - "LICENSE"
 
 - name: "{{ crc_mode }} | crc | check installed"
   become: true
