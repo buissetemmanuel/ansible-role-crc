@@ -30,13 +30,16 @@
 
 - name: "{{ crc_mode }} | crc | check installed"
   become: true
+  when: crc_state == 'present'
   ansible.builtin.command: crc version
   register: __crc_install_status
   changed_when: __crc_install_status.rc != 0
 
 - name: "{{ crc_mode }} | crc | ocp and kubectl | download and install Openshift Client and Kubernetes Client with checksum control"
   become: true
-  when: not ansible_check_mode
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.get_url:
     url: "{{ crc_ocp_download_url }}"
     dest: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
@@ -47,7 +50,9 @@
 
 - name: "{{ crc_mode }} | crc | ocp and kubectl | unarchive and put it in /usr/local/bin"
   become: true
-  when: not ansible_check_mode
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.unarchive:
     src: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
     dest: /usr/local/bin
@@ -57,12 +62,14 @@
 
 - name: "{{ crc_mode }} | crc | ocp | check installed"
   become: true
+  when: crc_state == 'present'
   ansible.builtin.command: oc version
   register: __crc_ocp_install_status
   changed_when: __crc_ocp_install_status.rc != 0
 
 - name: "{{ crc_mode }} | crc | kubectl | check installed"
   become: true
+  when: crc_state == 'present'
   ansible.builtin.command: kubectl
   register: __crc_kubectl_install_status
   changed_when: __crc_kubectl_install_status.rc != 0
