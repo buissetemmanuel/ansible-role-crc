@@ -32,7 +32,7 @@
   become: true
   ansible.builtin.command: crc version
   register: __crc_install_status
-  changed_when: __crc_install_status.rc != 2
+  changed_when: __crc_install_status.rc != 0
 
 - name: "{{ crc_mode }} | crc | ocp and kubectl | download and install Openshift Client and Kubernetes Client with checksum control"
   become: true
@@ -59,10 +59,10 @@
   become: true
   ansible.builtin.command: oc version
   register: __crc_ocp_install_status
-  changed_when: __crc_ocp_install_status.rc == 0
+  changed_when: __crc_ocp_install_status.rc != 0
 
 - name: "{{ crc_mode }} | crc | kubectl | check installed"
   become: true
   ansible.builtin.command: kubectl
   register: __crc_kubectl_install_status
-  changed_when: __crc_kubectl_install_status.rc != 1
+  changed_when: __crc_kubectl_install_status.rc != 0
