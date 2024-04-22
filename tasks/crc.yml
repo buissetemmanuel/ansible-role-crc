@@ -63,6 +63,6 @@
 
 - name: "{{ crc_mode }} | crc | kubectl | check installed"
   become: true
-  ansible.builtin.command: kubectl version
+  ansible.builtin.command: kubectl
   register: __crc_kubectl_install_status
   changed_when: __crc_kubectl_install_status.rc != 1
