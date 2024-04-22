@@ -15,7 +15,9 @@
 
 - name: "{{ crc_mode }} | crc | unarchive"
   become: true
-  when: not ansible_check_mode
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.unarchive:
     src: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
     dest: "{{ crc_tmp_dir }}"
