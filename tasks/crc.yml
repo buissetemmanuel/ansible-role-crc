@@ -107,7 +107,4 @@
     state: started
     enabled: true
   register: __crc_libvirtd_status
-
-- name: DEBUG
-  ansible.builtin.debug:
-    var: __crc_libvirtd_status
+  changed_when: __crc_libvirtd_status.state != 'started'
