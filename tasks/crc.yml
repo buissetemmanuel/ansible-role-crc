@@ -66,6 +66,9 @@
 
 - name: "{{ crc_mode }} | crc | ocp and kubectl | unarchive and put it in ~/.local/bin"
   become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
   when:
     - not ansible_check_mode
     - crc_state == 'present'
