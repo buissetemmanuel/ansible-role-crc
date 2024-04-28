@@ -155,3 +155,12 @@
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
     mode: 0666
+
+- name: "{{ crc_mode }} | crc | start CodeReady Deployment"
+  become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
+  ansible.builtin.shell: |
+    set -o pipefail
+    $HOME/.local/bin/crc start -c {{ crc_cpu }} -m {{ crc_memory }} -p {{ crc_pull_secert_path }} --log-level {{ crc_log_level }} | tee /tmp/install_status.log

@@ -9,21 +9,11 @@ crc_directories: []
 
 crc_pull_secret: "putYourownpullsecret"
 
+crc_cpu: 6
+crc_memory: 12288
 
 use_all_in_one_haproxy: true
 haproxy_ip: ""
 use_all_in_one_dnsmasq: true 
-log_level: info
 crc_ip_address: "{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-delete_crc_deployment: false
 forward_server: 1.1.1.1
-
-ocp4_release: latest
-ocp4_release_url: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp4_release }}/"
-ocp4_client: "openshift-client-linux.tar.gz"
-remove_oc_tool: false
-
-# 6 vCPU
-cpu: 6
-# 12G of RAM
-memory: 12288
