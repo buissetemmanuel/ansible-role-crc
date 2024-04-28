@@ -2,7 +2,7 @@
 
 - name: "{{ crc_mode }} | users | create ~/.local/bin"
   become: true
-  become_user: "{{ container_user_owner_service }}"
+  become_user: "{{ crc_user_owner }}"
   become_method: community.general.machinectl
   become_exe: "sudo machinectl"
   when:
