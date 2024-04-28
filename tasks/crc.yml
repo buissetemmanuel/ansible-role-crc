@@ -47,7 +47,7 @@
   become_method: community.general.machinectl
   become_exe: "sudo machinectl"
   when: crc_state == 'present'
-  ansible.builtin.shell: crc version
+  ansible.builtin.command: $HOME/.local/bin/crc version
   register: __crc_install_status
   changed_when: __crc_install_status.rc != 0
 
