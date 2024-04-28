@@ -9,8 +9,8 @@
     url: "{{ crc_download_url }}"
     dest: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
     mode: "0755"
-    owner: root
-    group: root
+    owner: "{{ crc_user_owner }}"
+    group: "{{ crc_user_group }}"
     checksum: "{{ crc_download_url_checksum }}"
 
 - name: "{{ crc_mode }} | crc | unarchive"
@@ -22,6 +22,8 @@
     src: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
     dest: "{{ crc_tmp_dir }}"
     remote_src: yes
+    owner: "{{ crc_user_owner }}"
+    group: "{{ crc_user_group }}"
 
 - name: "{{ crc_mode }} | crc | put binary in {{ crc_bin_dir }}"
   become: true
@@ -32,7 +34,9 @@
     src: "{{ crc_tmp_dir }}/{{ crc_download_folder_name }}/crc"
     dest: "{{ crc_bin_dir}}"
     remote_src: true
-    mode: '0755'
+    owner: "{{ crc_user_owner }}"
+    group: "{{ crc_user_group }}"
+    mode: '0700'
 
 - name: "{{ crc_mode }} | crc | check installed"
   become: true
