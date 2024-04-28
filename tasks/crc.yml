@@ -85,7 +85,7 @@
   become_method: community.general.machinectl
   become_exe: "sudo machinectl"
   when: crc_state == 'present'
-  ansible.builtin.command: oc version
+  ansible.builtin.command: $HOME/.local/bin/oc version
   register: __crc_ocp_install_status
   changed_when: __crc_ocp_install_status.rc != 0
 
@@ -95,6 +95,6 @@
   become_method: community.general.machinectl
   become_exe: "sudo machinectl"
   when: crc_state == 'present'
-  ansible.builtin.command: kubectl
+  ansible.builtin.command: $HOME/.local/bin/kubectl
   register: __crc_kubectl_install_status
   changed_when: __crc_kubectl_install_status.rc != 0
