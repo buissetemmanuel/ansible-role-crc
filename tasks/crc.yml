@@ -98,3 +98,13 @@
   ansible.builtin.command: $HOME/.local/bin/kubectl
   register: __crc_kubectl_install_status
   changed_when: __crc_kubectl_install_status.rc != 0
+
+- name: "{{ crc_mode }} | crc | libvirtd service"
+  become: true
+  when: crc_state == 'present'
+  ansible.builtin.systemd:
+    name: libvirtd
+    state: started
+    enabled: true
+  register: __crc_libvirtd_status
+  changed_when: __crc_libvirtd_status.rc != 0
