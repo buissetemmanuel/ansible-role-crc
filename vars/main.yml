@@ -2,6 +2,7 @@
 
 
 crc_home_dir: "/etc/crc"
+crc_bin_dir: "{{ crc_home_dir }}/bin"
 crc_etc_dir: "{{ crc_home_dir }}/etc"
 crc_logs_dir: "{{ crc_home_dir }}/logs"
 crc_secret_dir: "{{ crc_home_dir }}/secret"
@@ -15,6 +16,10 @@ crc_directories_mandatories:
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
     mode: "0755"
+  - path: "{{ crc_bin_dir }}"
+    owner: "{{ crc_user_owner }}"
+    group: "{{ crc_user_group }}"
+    mode: "{{ crc_directories_mode }}"
   - path: "{{ crc_etc_dir }}"
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"

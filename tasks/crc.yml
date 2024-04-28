@@ -23,14 +23,14 @@
     dest: "{{ crc_tmp_dir }}"
     remote_src: yes
 
-- name: "{{ crc_mode }} | crc | put binary in /usr/local/bin"
+- name: "{{ crc_mode }} | crc | put binary in {{ crc_bin_dir }}"
   become: true
   when:
     - not ansible_check_mode
     - crc_state == 'present'
   ansible.builtin.copy:
     src: "{{ crc_tmp_dir }}/{{ crc_download_folder_name }}/crc"
-    dest: /usr/local/bin
+    dest: "{{ crc_bin_dir}}"
     remote_src: true
     mode: '0755'
 
