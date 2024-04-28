@@ -13,3 +13,4 @@
        export PATH=$PATH:$CRC_BIN_PATH
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
+    mode: 0750
