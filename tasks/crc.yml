@@ -64,7 +64,7 @@
     group: root
     checksum: "{{ crc_ocp_download_url_checksum }}"
 
-- name: "{{ crc_mode }} | crc | ocp and kubectl | unarchive and put it in {{ crc_bin_dir }}"
+- name: "{{ crc_mode }} | crc | ocp and kubectl | unarchive and put it in ~/.local/bin"
   become: true
   when:
     - not ansible_check_mode
