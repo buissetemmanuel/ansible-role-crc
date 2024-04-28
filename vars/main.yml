@@ -42,3 +42,5 @@ crc_download_url_checksum: "sha256:{{ crc_download_url }}.sha256"
 crc_ocp_download_file_name: "openshift-client-linux-{{ crc_ocp_version }}.tar.gz"
 crc_ocp_download_url: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ crc_ocp_version }}/{{ crc_ocp_download_file_name }}"
 crc_ocp_download_url_checksum: "sha256:https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ crc_ocp_version }}/sha256sum.txt"
+
+crc_pull_secret_path: "{{ crc_secret_dir }}/pull_secret.txt"

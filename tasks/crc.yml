@@ -109,40 +109,48 @@
   register: __crc_libvirtd_status
   changed_when: __crc_libvirtd_status.state != 'started'
 
-- name: "{{ crc_mode }} | crc | copying over dnsmasq configuration"
-  become: true
-  when: crc_state == 'present'
+#- name: "{{ crc_mode }} | crc | copying over dnsmasq configuration"
+#  become: true
+#  when: crc_state == 'present'
+#  ansible.builtin.copy:
+#    content: |
+#      [main]
+#      dns=dnsmasq
+#    dest: /etc/NetworkManager/conf.d/crc-nm-dnsmasq.conf
+#    owner: root
+#    group: root
+#    mode: 0666
+#
+#- name: "{{ crc_mode }} | crc | copying over dnsmasq configuration for crc"
+#  become: true
+#  when: crc_state == 'present'
+#  ansible.builtin.template:
+#    src: crc.conf.j2
+#    dest: /etc/NetworkManager/dnsmasq.d/crc.conf
+#    owner: root
+#    group: root
+#    mode: 0666
+#
+#- name: "{{ crc_mode }} | crc | enable and start NetworkManager service"
+#  become: true
+#  when: crc_state == 'present'
+#  ansible.builtin.systemd:
+#    name: NetworkManager
+#    state: restarted
+#    enabled: yes
+#
+#- name: "{{ crc_mode }} | crc | enable and start dnsmasq service"
+#  become: true
+#  when: crc_state == 'present'
+#  ansible.builtin.systemd:
+#    name: dnsmasq
+#    state: restarted
+#    enabled: yes
+
+- name: "{{ crc_mode }} | crc | copying over pull-secret.txt"
   ansible.builtin.copy:
-    content: |
-      [main]
-      dns=dnsmasq
-    dest: /etc/NetworkManager/conf.d/crc-nm-dnsmasq.conf
-    owner: root
-    group: root
+    content: "{{ crc_pull_secret }}"
+    dest:  "{{ crc_pull_secret_path }}"
+    owner: "{{ crc_user_owner }}"
+    group: "{{ crc_user_group }}"
     mode: 0666
-
-- name: "{{ crc_mode }} | crc | copying over dnsmasq configuration for crc"
-  become: true
-  when: crc_state == 'present'
-  ansible.builtin.template:
-    src: crc.conf.j2
-    dest: /etc/NetworkManager/dnsmasq.d/crc.conf
-    owner: root
-    group: root
-    mode: 0666
-
-- name: "{{ crc_mode }} | crc | enable and start NetworkManager service"
-  become: true
-  when: crc_state == 'present'
-  ansible.builtin.systemd:
-    name: NetworkManager
-    state: restarted
-    enabled: yes
-
-- name: "{{ crc_mode }} | crc | enable and start dnsmasq service"
-  become: true
-  when: crc_state == 'present'
-  ansible.builtin.systemd:
-    name: dnsmasq
-    state: restarted
-    enabled: yes
