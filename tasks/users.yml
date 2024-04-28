@@ -12,7 +12,7 @@
   ansible.builtin.copy:
     dest: "{{ __crc_user_owner_info.home }}/.bashrc.d/crc_bin_path.rc"
     content: |
-       export CRC_BIN_PATH={{ crc_bin_dir }}/crc
+       export CRC_BIN_PATH={{ crc_bin_dir }}
        export PATH=$PATH:$CRC_BIN_PATH
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
