@@ -148,6 +148,7 @@
 #    enabled: yes
 
 - name: "{{ crc_mode }} | crc | copying over pull-secret.txt"
+  become: true
   ansible.builtin.copy:
     content: "{{ crc_pull_secret }}"
     dest:  "{{ crc_pull_secret_path }}"
