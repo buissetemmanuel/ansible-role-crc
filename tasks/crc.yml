@@ -163,4 +163,4 @@
   become_exe: "sudo machinectl"
   ansible.builtin.shell: |
     set -o pipefail
-    $HOME/.local/bin/crc start -c {{ crc_cpu }} -m {{ crc_memory }} -p {{ crc_pull_secert_path }} --log-level {{ crc_log_level }} | tee /tmp/install_status.log
+    $HOME/.local/bin/crc start -c {{ crc_cpu }} -m {{ crc_memory }} -p {{ crc_pull_secret_path }} --log-level {{ crc_log_level }} | tee /tmp/install_status.log
