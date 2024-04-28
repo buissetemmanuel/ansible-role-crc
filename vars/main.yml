@@ -1,7 +1,7 @@
 ---
 
 
-crc_home_dir: "/etc/crc"
+crc_home_dir: "/opt/crc"
 crc_bin_dir: "{{ crc_home_dir }}/bin"
 crc_etc_dir: "{{ crc_home_dir }}/etc"
 crc_logs_dir: "{{ crc_home_dir }}/logs"
