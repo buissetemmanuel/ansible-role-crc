@@ -25,14 +25,17 @@
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
 
-- name: "{{ crc_mode }} | crc | put binary in {{ crc_bin_dir }}"
+- name: "{{ crc_mode }} | crc | put binary in ~/.local/bin"
   become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
   when:
     - not ansible_check_mode
     - crc_state == 'present'
   ansible.builtin.copy:
     src: "{{ crc_tmp_dir }}/{{ crc_download_folder_name }}/crc"
-    dest: "{{ crc_bin_dir}}"
+    dest: "$HOME/.local/bin"
     remote_src: true
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
@@ -68,7 +71,7 @@
     - crc_state == 'present'
   ansible.builtin.unarchive:
     src: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
-    dest: "{{ crc_bin_dir }}"
+    dest: "$HOME/.local/bin"
     remote_src: yes
     exclude:
       - "README.md"
