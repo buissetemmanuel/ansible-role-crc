@@ -36,6 +36,9 @@
 
 - name: "{{ crc_mode }} | crc | check installed"
   become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
   when: crc_state == 'present'
   ansible.builtin.command: crc version
   register: __crc_install_status
@@ -54,20 +57,23 @@
     group: root
     checksum: "{{ crc_ocp_download_url_checksum }}"
 
-- name: "{{ crc_mode }} | crc | ocp and kubectl | unarchive and put it in /usr/local/bin"
+- name: "{{ crc_mode }} | crc | ocp and kubectl | unarchive and put it in {{ crc_bin_dir }}"
   become: true
   when:
     - not ansible_check_mode
     - crc_state == 'present'
   ansible.builtin.unarchive:
     src: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
-    dest: /usr/local/bin
+    dest: "{{ crc_bin_dir }}"
     remote_src: yes
     exclude:
       - "README.md"
 
 - name: "{{ crc_mode }} | crc | ocp | check installed"
   become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
   when: crc_state == 'present'
   ansible.builtin.command: oc version
   register: __crc_ocp_install_status
@@ -75,6 +81,9 @@
 
 - name: "{{ crc_mode }} | crc | kubectl | check installed"
   become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
   when: crc_state == 'present'
   ansible.builtin.command: kubectl
   register: __crc_kubectl_install_status
