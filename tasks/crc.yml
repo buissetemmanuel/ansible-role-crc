@@ -158,6 +158,7 @@
 
 - name: "{{ crc_mode }} | crc | setup CodeReady Deployment"
   become: true
+  become_user: "{{ crc_user_owner }}"
   ansible.builtin.shell: |
     set -o pipefail
     $HOME/.local/bin/crc config set consent-telemetry yes | tee /tmp/setup_status.log
