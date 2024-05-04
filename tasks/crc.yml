@@ -110,6 +110,13 @@
     group: "{{ crc_user_group }}"
     mode: 0666
 
+- name: "{{ crc_mode }} | crc | cleanup CodeReady Deployment"
+  become: true
+  become_user: "{{ crc_user_owner }}"
+  ansible.builtin.shell: |
+    set -o pipefail
+    $HOME/.local/bin/crc cleanup | tee /tmp/setup_status.log
+
 - name: "{{ crc_mode }} | crc | setup CodeReady Deployment"
   become: true
   become_user: "{{ crc_user_owner }}"
