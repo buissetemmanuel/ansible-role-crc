@@ -1,6 +1,6 @@
 ---
 
-- name: "{{ crc_mode }} | users | create ~/.local/bin"
+- name: "{{ crc_mode }} | create ~/.local/bin"
   become: true
   become_user: "{{ crc_user_owner }}"
   become_method: community.general.machinectl

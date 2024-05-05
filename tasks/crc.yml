@@ -109,7 +109,7 @@
 
 - name: "{{ crc_mode }} | crc | delete CodeReady Deployment"
   become: true
-  become_user: "{{ crc_user_owner }}"
+  become_user: root
   when:
     - not ansible_check_mode
     - crc_state == 'absent'
