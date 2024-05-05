@@ -10,5 +10,8 @@
 - name: "{{ crc_mode }} | directories"
   ansible.builtin.include_tasks: directories.yml
 
+- name: "{{ crc_mode }} | binaries"
+  ansible.builtin.include_tasks: binaries.yml
+
 - name: "{{ crc_mode }} | crc"
   ansible.builtin.include_tasks: crc.yml
