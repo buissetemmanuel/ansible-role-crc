@@ -30,8 +30,8 @@
     - not ansible_check_mode
     - crc_state == 'present'
   ansible.builtin.copy:
-    src: crc.conf
-    dest: /etc/NetworkManager/dnsmasq.d/crc.conf
+    src: "crc.conf"
+    dest: "/etc/NetworkManager/dnsmasq.d/crc.conf"
     owner: root
     group: root
     mode: '0644'
