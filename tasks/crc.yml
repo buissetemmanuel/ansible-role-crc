@@ -36,25 +36,25 @@
     group: root
     mode: '0644'
 
-#- name: "{{ crc_mode }} | crc | enable and start NetworkManager service"
-#  become: true
-#  when:
-#    - not ansible_check_mode
-#    - crc_state == 'present'
-#  ansible.builtin.systemd:
-#    name: NetworkManager
-#    state: restarted
-#    enabled: yes
-#
-#- name: "{{ crc_mode }} | crc | enable and start dnsmasq service"
-#  become: true
-#  when:
-#    - not ansible_check_mode
-#    - crc_state == 'present'
-#  ansible.builtin.systemd:
-#    name: dnsmasq
-#    state: restarted
-#    enabled: yes
+- name: "{{ crc_mode }} | crc | enable and start NetworkManager service"
+  become: true
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.systemd:
+    name: NetworkManager
+    state: restarted
+    enabled: yes
+
+- name: "{{ crc_mode }} | crc | enable and start dnsmasq service"
+  become: true
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.systemd:
+    name: dnsmasq
+    state: restarted
+    enabled: yes
 
 - name: "{{ crc_mode }} | crc | copying over pull-secret.txt"
   become: true
