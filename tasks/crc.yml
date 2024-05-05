@@ -125,17 +125,17 @@
     group: "{{ crc_user_group }}"
     mode: 0666
 
-- name: "{{ crc_mode }} | crc | cleanup CodeReady Deployment"
-  become: true
-  become_user: "{{ crc_user_owner }}"
-  become_method: community.general.machinectl
-  become_exe: "sudo machinectl"
-  when:
-    - not ansible_check_mode
-    - crc_state == 'absent'
-  ansible.builtin.shell: |
-    set -o pipefail
-    $HOME/.local/bin/crc cleanup | tee /tmp/setup_status.log
+#- name: "{{ crc_mode }} | crc | cleanup CodeReady Deployment"
+#  become: true
+#  become_user: "{{ crc_user_owner }}"
+#  become_method: community.general.machinectl
+#  become_exe: "sudo machinectl"
+#  when:
+#    - not ansible_check_mode
+#    - crc_state == 'absent'
+#  ansible.builtin.shell: |
+#    set -o pipefail
+#    $HOME/.local/bin/crc cleanup | tee /tmp/setup_status.log
 
 - name: "{{ crc_mode }} | crc | setup CodeReady Deployment"
   become: true
