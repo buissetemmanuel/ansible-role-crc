@@ -46,14 +46,18 @@
   become_user: "{{ crc_user_owner }}"
   become_method: community.general.machinectl
   become_exe: "sudo machinectl"
-  when: crc_state == 'present'
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.command: $HOME/.local/bin/crc version
   register: __crc_install_status
   changed_when: __crc_install_status.rc != 0
 
 - name: "{{ crc_mode }} | crc | libvirtd service"
   become: true
-  when: crc_state == 'present'
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.systemd:
     name: libvirtd
     state: started
@@ -63,7 +67,9 @@
 
 - name: "{{ crc_mode }} | crc | copying over dnsmasq configuration"
   become: true
-  when: crc_state == 'present'
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.copy:
     content: |
       [main]
@@ -75,7 +81,9 @@
 
 - name: "{{ crc_mode }} | crc | copying over dnsmasq configuration for crc"
   become: true
-  when: crc_state == 'present'
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.copy:
     content: |
       server=/crc.testing/192.168.130.11
@@ -87,7 +95,9 @@
 
 - name: "{{ crc_mode }} | crc | enable and start NetworkManager service"
   become: true
-  when: crc_state == 'present'
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.systemd:
     name: NetworkManager
     state: restarted
@@ -95,7 +105,9 @@
 
 - name: "{{ crc_mode }} | crc | enable and start dnsmasq service"
   become: true
-  when: crc_state == 'present'
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.systemd:
     name: dnsmasq
     state: restarted
@@ -103,6 +115,9 @@
 
 - name: "{{ crc_mode }} | crc | copying over pull-secret.txt"
   become: true
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.copy:
     content: "{{ crc_pull_secret }}"
     dest:  "{{ crc_pull_secret_path }}"
@@ -113,6 +128,11 @@
 - name: "{{ crc_mode }} | crc | cleanup CodeReady Deployment"
   become: true
   become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
+  when:
+    - not ansible_check_mode
+    - crc_state == 'absent'
   ansible.builtin.shell: |
     set -o pipefail
     $HOME/.local/bin/crc cleanup | tee /tmp/setup_status.log
@@ -122,6 +142,9 @@
   become_user: "{{ crc_user_owner }}"
   become_method: community.general.machinectl
   become_exe: "sudo machinectl"
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.shell: |
     set -o pipefail
     $HOME/.local/bin/crc config set consent-telemetry yes | tee /tmp/setup_status.log
@@ -134,6 +157,9 @@
   become_user: "{{ crc_user_owner }}"
   become_method: community.general.machinectl
   become_exe: "sudo machinectl"
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.shell: |
     set -o pipefail
     $HOME/.local/bin/crc start -c {{ crc_cpu }} -m {{ crc_memory }} -p {{ crc_pull_secret_path }} --log-level {{ crc_log_level }} | tee /tmp/install_status.log
@@ -171,7 +197,9 @@
   become_user: "{{ crc_user_owner }}"
   become_method: community.general.machinectl
   become_exe: "sudo machinectl"
-  when: crc_state == 'present'
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.command: $HOME/.local/bin/oc version
   register: __crc_ocp_install_status
   changed_when: __crc_ocp_install_status.rc != 0
@@ -181,7 +209,9 @@
   become_user: "{{ crc_user_owner }}"
   become_method: community.general.machinectl
   become_exe: "sudo machinectl"
-  when: crc_state == 'present'
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
   ansible.builtin.command: $HOME/.local/bin/kubectl
   register: __crc_kubectl_install_status
   changed_when: __crc_kubectl_install_status.rc != 0
