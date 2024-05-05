@@ -22,7 +22,7 @@
     dest: /etc/NetworkManager/conf.d/crc-nm-none.conf
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
 
 - name: "{{ crc_mode }} | crc | copying over dnsmasq configuration for crc"
   become: true
@@ -34,7 +34,7 @@
     dest: /etc/NetworkManager/dnsmasq.d/crc.conf
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
 
 #- name: "{{ crc_mode }} | crc | enable and start NetworkManager service"
 #  become: true
