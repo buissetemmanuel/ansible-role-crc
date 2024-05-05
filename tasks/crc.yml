@@ -17,7 +17,7 @@
   when:
     - not ansible_check_mode
     - crc_state == 'present'
-  ansible.builtin.file:
+  ansible.builtin.copy:
     src: crc-nm-none.conf
     dest: /etc/NetworkManager/conf.d/crc-nm-none.conf
     owner: root
