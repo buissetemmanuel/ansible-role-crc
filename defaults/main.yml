@@ -8,6 +8,7 @@ crc_ocp_version: 4.15.9
 crc_user_owner: crcuid
 crc_user_group: crcgid
 
+crc_home_dir: "/home/{{ crc_user_owner }}"
 crc_directories: []
 
 crc_pull_secret: "putYourownpullsecret"
