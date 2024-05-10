@@ -68,18 +68,6 @@
     group: "{{ crc_user_group }}"
     mode: 0666
 
-#- name: "{{ crc_mode }} | crc | cleanup CodeReady Deployment"
-#  become: true
-#  become_user: "{{ crc_user_owner }}"
-#  become_method: community.general.machinectl
-#  become_exe: "sudo machinectl"
-#  when:
-#    - not ansible_check_mode
-#    - crc_state == 'absent'
-#  ansible.builtin.shell: |
-#    set -o pipefail
-#    $HOME/.local/bin/crc cleanup | tee /tmp/setup_status.log
-
 - name: "{{ crc_mode }} | crc | setup CodeReady Deployment"
   become: true
   become_user: "{{ crc_user_owner }}"
@@ -90,10 +78,10 @@
     - crc_state == 'present'
   ansible.builtin.shell: |
     set -o pipefail
-    $HOME/.local/bin/crc config set consent-telemetry yes | tee /tmp/setup_status.log
-    $HOME/.local/bin/crc config set nameserver {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }} | tee /tmp/setup_status.log
-    $HOME/.local/bin/crc config set network-mode system | tee /tmp/setup_status.log
-    $HOME/.local/bin/crc setup | tee /tmp/setup_status.log
+    {{ crc_bin_dir }}/crc config set consent-telemetry yes | tee /tmp/setup_status.log
+    {{ crc_bin_dir }}/crc config set nameserver {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }} | tee /tmp/setup_status.log
+    {{ crc_bin_dir }}/crc config set network-mode system | tee /tmp/setup_status.log
+    {{ crc_bin_dir }}/crc setup | tee /tmp/setup_status.log
 
 - name: "{{ crc_mode }} | crc | start CodeReady Deployment"
   become: true
@@ -105,14 +93,16 @@
     - crc_state == 'present'
   ansible.builtin.shell: |
     set -o pipefail
-    $HOME/.local/bin/crc start -c {{ crc_cpu }} -m {{ crc_memory }} -p {{ crc_pull_secret_path }} --log-level {{ crc_log_level }} | tee /tmp/install_status.log
+    {{ crc_bin_dir }}/crc start -c {{ crc_cpu }} -m {{ crc_memory }} -p {{ crc_pull_secret_path }} --log-level {{ crc_log_level }} | tee /tmp/install_status.log
 
 - name: "{{ crc_mode }} | crc | delete CodeReady Deployment"
   become: true
-  become_user: root
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
   when:
     - not ansible_check_mode
     - crc_state == 'absent'
   ansible.builtin.shell: |
     set -o pipefail
-    $HOME/.local/bin/crc delete | tee /tmp/delete_status.log
+    {{ crc_bin_dir }}/crc delete | tee /tmp/delete_status.log

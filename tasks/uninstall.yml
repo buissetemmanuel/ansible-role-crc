@@ -9,6 +9,3 @@
 
 - name: "{{ crc_mode }} | crc | directories"
   ansible.builtin.include_tasks: directories.yml
-
-- name: "{{ crc_mode }} | crc | users"
-  ansible.builtin.include_tasks: users.yml

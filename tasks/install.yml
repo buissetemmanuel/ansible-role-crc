@@ -4,9 +4,6 @@
   ansible.builtin.set_fact:
     crc_mode: "Install"
 
-- name: "{{ crc_mode }} | users"
-  ansible.builtin.include_tasks: users.yml
-
 - name: "{{ crc_mode }} | directories"
   ansible.builtin.include_tasks: directories.yml
 

@@ -25,17 +25,14 @@
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
 
-- name: "{{ crc_mode }} | binaries | put binary in ~/.local/bin"
+- name: "{{ crc_mode }} | binaries | put binary in {{ crc_bin_dir }}"
   become: true
-  become_user: "{{ crc_user_owner }}"
-  become_method: community.general.machinectl
-  become_exe: "sudo machinectl"
   when:
     - not ansible_check_mode
     - crc_state == 'present'
   ansible.builtin.copy:
     src: "{{ crc_tmp_dir }}/{{ crc_download_folder_name }}/crc"
-    dest: "$HOME/.local/bin"
+    dest: "{{ crc_bin_dir }}"
     remote_src: true
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
@@ -49,7 +46,7 @@
   when:
     - not ansible_check_mode
     - crc_state == 'present'
-  ansible.builtin.command: $HOME/.local/bin/crc version
+  ansible.builtin.command: {{ crc_bin_dir }}/crc version
   register: __crc_install_status
   changed_when: __crc_install_status.rc != 0
 
@@ -76,7 +73,7 @@
     - crc_state == 'present'
   ansible.builtin.unarchive:
     src: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
-    dest: "$HOME/.local/bin"
+    dest: "{{ crc_bin_dir }}"
     remote_src: yes
     exclude:
       - "README.md"
@@ -89,7 +86,7 @@
   when:
     - not ansible_check_mode
     - crc_state == 'present'
-  ansible.builtin.command: $HOME/.local/bin/oc -h
+  ansible.builtin.command: {{ crc_bin_dir }}/oc -h
   register: __crc_ocp_install_status
   changed_when: __crc_ocp_install_status.rc != 0
 
@@ -101,6 +98,6 @@
   when:
     - not ansible_check_mode
     - crc_state == 'present'
-  ansible.builtin.command: $HOME/.local/bin/kubectl
+  ansible.builtin.command: {{ crc_bin_dir }}/kubectl
   register: __crc_kubectl_install_status
   changed_when: __crc_kubectl_install_status.rc != 0
