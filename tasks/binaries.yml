@@ -46,7 +46,7 @@
   when:
     - not ansible_check_mode
     - crc_state == 'present'
-  ansible.builtin.command: {{ crc_bin_dir }}/crc version
+  ansible.builtin.command: "{{ crc_bin_dir }}/crc version"
   register: __crc_install_status
   changed_when: __crc_install_status.rc != 0
 
@@ -86,7 +86,7 @@
   when:
     - not ansible_check_mode
     - crc_state == 'present'
-  ansible.builtin.command: {{ crc_bin_dir }}/oc -h
+  ansible.builtin.command: "{{ crc_bin_dir }}/oc -h"
   register: __crc_ocp_install_status
   changed_when: __crc_ocp_install_status.rc != 0
 
@@ -98,6 +98,6 @@
   when:
     - not ansible_check_mode
     - crc_state == 'present'
-  ansible.builtin.command: {{ crc_bin_dir }}/kubectl
+  ansible.builtin.command: "{{ crc_bin_dir }}/kubectl"
   register: __crc_kubectl_install_status
   changed_when: __crc_kubectl_install_status.rc != 0
