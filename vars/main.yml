@@ -4,7 +4,7 @@ crc_bin_dir: "{{ crc_home_dir }}/bin"
 crc_etc_dir: "{{ crc_home_dir }}/etc"
 crc_logs_dir: "{{ crc_home_dir }}/logs"
 crc_secret_dir: "{{ crc_home_dir }}/secret"
-crc_tmp_dir: "{{ crc_home_dir }}/tmp"
+crc_tmp_dir: "{{ crc_home_dir }}{{ crc_tmp_dir }}"
 
 crc_directories_state: "{{ 'directory' if crc_state == 'present' else 'absent' }}"
 crc_directories_mode: '0750'
