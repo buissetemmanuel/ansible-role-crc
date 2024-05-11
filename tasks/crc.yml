@@ -106,3 +106,23 @@
   ansible.builtin.shell: |
     set -o pipefail
     {{ crc_bin_dir }}/crc delete --force | tee {{ crc_tmp_dir }}/delete_status.log
+
+- name: "{{ crc_mode }} | crc | delete Network CRC"
+  become: true
+  when:
+    - not ansible_check_mode
+    - crc_state == 'absent'
+  ansible.builtin.shell: |
+    set -o pipefail
+    virsh net-destroy crc | tee {{ crc_tmp_dir }}/delete_status.log
+    virsh net-undefine crc | tee {{ crc_tmp_dir }}/delete_status.log
+
+- name: "{{ crc_mode }} | crc | delete pool CRC"
+  become: true
+  when:
+    - not ansible_check_mode
+    - crc_state == 'absent'
+  ansible.builtin.shell: |
+    set -o pipefail
+    virsh pool-destroy crc | tee {{ crc_tmp_dir }}/delete_status.log
+    virsh pool-undefine crc | tee {{ crc_tmp_dir }}/delete_status.log
