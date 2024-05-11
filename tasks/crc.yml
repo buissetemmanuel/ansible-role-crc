@@ -105,4 +105,4 @@
     - crc_state == 'absent'
   ansible.builtin.shell: |
     set -o pipefail
-    {{ crc_bin_dir }}/crc delete | tee {{ crc_tmp_dir }}/delete_status.log
+    {{ crc_bin_dir }}/crc delete --force | tee {{ crc_tmp_dir }}/delete_status.log
