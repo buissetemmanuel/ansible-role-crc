@@ -31,7 +31,7 @@
     - crc_state == 'present'
   ansible.builtin.copy:
     src: crc-dnsmasq.conf
-    dest: /etc/NetworkManager/dnsmasq.d/crc-dnsmasq.conf
+    dest: /etc/dnsmasq.d/crc-dnsmasq.conf
     owner: root
     group: root
     mode: '0644'
