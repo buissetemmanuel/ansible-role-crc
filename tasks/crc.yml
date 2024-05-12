@@ -46,16 +46,6 @@
     state: restarted
     enabled: yes
 
-#- name: "{{ crc_mode }} | crc | enable and start dnsmasq service"
-#  become: true
-#  when:
-#    - not ansible_check_mode
-#    - crc_state == 'present'
-#  ansible.builtin.systemd:
-#    name: dnsmasq
-#    state: restarted
-#    enabled: yes
-
 - name: "{{ crc_mode }} | crc | copying over pull-secret.txt"
   become: true
   when:
@@ -78,10 +68,12 @@
     - crc_state == 'present'
   ansible.builtin.shell: |
     set -o pipefail
-    {{ crc_bin_dir }}/crc config set consent-telemetry yes | tee {{ crc_tmp_dir }}/setup_status.log
-    {{ crc_bin_dir }}/crc config set nameserver {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }} | tee {{ crc_tmp_dir }}/setup_status.log
-    {{ crc_bin_dir }}/crc config set network-mode system | tee {{ crc_tmp_dir }}/setup_status.log
-    {{ crc_bin_dir }}/crc setup | tee {{ crc_tmp_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc config set consent-telemetry yes | tee {{ crc_logs_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc config set nameserver {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }} | tee {{ crc_logs_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc config set network-mode system | tee {{ crc_logs_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc config set cpus {{ ansible_processor_vcpus }} | tee {{ crc_logs_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc config set memory {{ ansible_memtotal_mb }} | tee {{ crc_logs_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc setup | tee {{ crc_logs_dir }}/setup_status.log
 
 - name: "{{ crc_mode }} | crc | start CodeReady Deployment"
   become: true
@@ -93,7 +85,7 @@
     - crc_state == 'present'
   ansible.builtin.shell: |
     set -o pipefail
-    {{ crc_bin_dir }}/crc start -c {{ crc_cpu }} -m {{ crc_memory }} -p {{ crc_pull_secret_path }} --log-level {{ crc_log_level }} | tee {{ crc_tmp_dir }}/install_status.log
+    {{ crc_bin_dir }}/crc start -c {{ crc_cpu }} -m {{ crc_memory }} -p {{ crc_pull_secret_path }} --log-level {{ crc_log_level }} | tee {{ crc_logs_dir }}/install_status.log
 
 - name: "{{ crc_mode }} | crc | delete CodeReady Deployment"
   become: true
@@ -105,7 +97,7 @@
     - crc_state == 'absent'
   ansible.builtin.shell: |
     set -o pipefail
-    {{ crc_bin_dir }}/crc delete --force | tee {{ crc_tmp_dir }}/delete_status.log
+    {{ crc_bin_dir }}/crc delete --force | tee {{ crc_logs_dir }}/delete_status.log
 
 - name: "{{ crc_mode }} | crc | delete Network CRC"
   become: true
@@ -114,8 +106,8 @@
     - crc_state == 'absent'
   ansible.builtin.shell: |
     set -o pipefail
-    virsh net-destroy crc | tee {{ crc_tmp_dir }}/delete_status.log
-    virsh net-undefine crc | tee {{ crc_tmp_dir }}/delete_status.log
+    virsh net-destroy crc | tee {{ crc_logs_dir }}/delete_status.log
+    virsh net-undefine crc | tee {{ crc_logs_dir }}/delete_status.log
 
 - name: "{{ crc_mode }} | crc | delete pool CRC"
   become: true
@@ -124,5 +116,5 @@
     - crc_state == 'absent'
   ansible.builtin.shell: |
     set -o pipefail
-    virsh pool-destroy crc | tee {{ crc_tmp_dir }}/delete_status.log
-    virsh pool-undefine crc | tee {{ crc_tmp_dir }}/delete_status.log
+    virsh pool-destroy crc | tee {{ crc_logs_dir }}/delete_status.log
+    virsh pool-undefine crc | tee {{ crc_logs_dir }}/delete_status.log
