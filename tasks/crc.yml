@@ -29,8 +29,8 @@
   when:
     - not ansible_check_mode
     - crc_state == 'present'
-  ansible.builtin.copy:
-    src: 01-crc.conf
+  ansible.builtin.template:
+    src: 01-crc.conf.j2
     dest: /etc/NetworkManager/dnsmasq.d/01-crc.conf
     owner: root
     group: root
