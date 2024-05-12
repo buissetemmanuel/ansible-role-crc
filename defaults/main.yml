@@ -11,9 +11,14 @@ crc_user_group: crcgid
 crc_home_dir: "/home/{{ crc_user_owner }}"
 crc_directories: []
 
-crc_pull_secret: "putYourownpullsecret"
+crc_config_nameserver: 1.1.1.1
 
-crc_cpu: 6
-crc_memory: 12288
+# if not define, take maximum of VM
+#crc_config_cpus: 6
+
+# if not define, take maximum of VM
+#crc_config_memory: 12288
+
+crc_config_pull_secret_file: "putYourownpullsecret"
 
 crc_log_level: info

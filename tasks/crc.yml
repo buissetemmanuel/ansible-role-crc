@@ -69,10 +69,11 @@
   ansible.builtin.shell: |
     set -o pipefail
     {{ crc_bin_dir }}/crc config set consent-telemetry yes | tee {{ crc_logs_dir }}/setup_status.log
-    {{ crc_bin_dir }}/crc config set nameserver {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }} | tee {{ crc_logs_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc config set nameserver {{ crc_config_nameserver }} | tee {{ crc_logs_dir }}/setup_status.log
     {{ crc_bin_dir }}/crc config set network-mode system | tee {{ crc_logs_dir }}/setup_status.log
-    {{ crc_bin_dir }}/crc config set cpus {{ ansible_processor_vcpus }} | tee {{ crc_logs_dir }}/setup_status.log
-    {{ crc_bin_dir }}/crc config set memory {{ ansible_memtotal_mb }} | tee {{ crc_logs_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc config set cpus {{ crc_config_cpus if crc_config_cpus is defined else ansible_processor_vcpus }} | tee {{ crc_logs_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc config set memory {{ crc_config_memory if crc_config_memory is defined else ansible_memtotal_mb }} | tee {{ crc_logs_dir }}/setup_status.log
+    {{ crc_bin_dir }}/crc config set pull-secret-file {{ crc_config_pull_secret_file }} | tee {{ crc_logs_dir }}/setup_status.log
     {{ crc_bin_dir }}/crc setup | tee {{ crc_logs_dir }}/setup_status.log
 
 - name: "{{ crc_mode }} | crc | start CodeReady Deployment"
@@ -85,7 +86,7 @@
     - crc_state == 'present'
   ansible.builtin.shell: |
     set -o pipefail
-    {{ crc_bin_dir }}/crc start -c {{ crc_cpu }} -m {{ crc_memory }} -p {{ crc_pull_secret_path }} --log-level {{ crc_log_level }} | tee {{ crc_logs_dir }}/install_status.log
+    {{ crc_bin_dir }}/crc start --log-level {{ crc_log_level }} | tee {{ crc_logs_dir }}/install_status.log
 
 - name: "{{ crc_mode }} | crc | delete CodeReady Deployment"
   become: true
