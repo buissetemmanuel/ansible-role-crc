@@ -53,7 +53,7 @@
     - crc_state == 'present'
   ansible.builtin.copy:
     content: "{{ crc_config_pull_secret_file }}"
-    dest:  "{{ crc_pull_secret_path }}"
+    dest: "{{ crc_pull_secret_path }}"
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
     mode: 0666
