@@ -1,0 +1,24 @@
+---
+
+crc_state: present
+
+crc_version: 2.34.1
+crc_ocp_version: 4.15.9
+
+crc_user_owner: crcuid
+crc_user_group: crcgid
+
+crc_home_dir: "/home/{{ crc_user_owner }}"
+crc_directories: []
+
+crc_config_nameserver: 1.1.1.1
+
+# if not define, take maximum of VM
+# crc_config_cpus: 6
+
+# if not define, take maximum of VM
+# crc_config_memory: 12288
+
+crc_config_pull_secret_file: "putYourownpullsecret"
+
+crc_log_level: info

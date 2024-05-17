@@ -1,0 +1,14 @@
+---
+
+- name: "{{ crc_mode }} | directories"
+  become: true
+  ansible.builtin.file:
+    state: "{{ crc_directories_state }}"
+    path: "{{ directory.path }}"
+    mode: "{{ directory.mode if directory.mode is defined else crc_directories_mode }}"
+    owner: "{{ directory.owner }}"
+    group: "{{ directory.group }}"
+  loop: "{{ crc_directories_mandatories + crc_directories }}"
+  loop_control:
+    loop_var: directory
+    label: "{{ directory.path }}"

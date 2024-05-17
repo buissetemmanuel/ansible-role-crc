@@ -1,0 +1,9 @@
+---
+
+- name: Install
+  when: crc_state == 'present'
+  ansible.builtin.include_tasks: install.yml
+
+- name: Uninstall
+  when: crc_state == 'absent'
+  ansible.builtin.include_tasks: uninstall.yml

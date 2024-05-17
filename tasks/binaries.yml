@@ -1,0 +1,103 @@
+---
+
+- name: "{{ crc_mode }} | binaries | download and install Code Ready Container with checksum control"
+  become: true
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.get_url:
+    url: "{{ crc_download_url }}"
+    dest: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
+    mode: "0755"
+    owner: "{{ crc_user_owner }}"
+    group: "{{ crc_user_group }}"
+    checksum: "{{ crc_download_url_checksum }}"
+
+- name: "{{ crc_mode }} | binaries | unarchive"
+  become: true
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.unarchive:
+    src: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
+    dest: "{{ crc_tmp_dir }}"
+    remote_src: true
+    owner: "{{ crc_user_owner }}"
+    group: "{{ crc_user_group }}"
+
+- name: "{{ crc_mode }} | binaries | put binary in {{ crc_bin_dir }}"
+  become: true
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.copy:
+    src: "{{ crc_tmp_dir }}/{{ crc_download_folder_name }}/crc"
+    dest: "{{ crc_bin_dir }}"
+    remote_src: true
+    owner: "{{ crc_user_owner }}"
+    group: "{{ crc_user_group }}"
+    mode: '0700'
+
+- name: "{{ crc_mode }} | binaries | crc | check installed"
+  become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.command: "{{ crc_bin_dir }}/crc version"
+  register: __crc_install_status
+  changed_when: __crc_install_status.rc != 0
+
+- name: "{{ crc_mode }} | binaries | ocp and kubectl | download and install Openshift Client and Kubernetes Client with checksum control"
+  become: true
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.get_url:
+    url: "{{ crc_ocp_download_url }}"
+    dest: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
+    mode: "0755"
+    owner: root
+    group: root
+    checksum: "{{ crc_ocp_download_url_checksum }}"
+
+- name: "{{ crc_mode }} | binaries | ocp and kubectl | unarchive and put it in ~/.local/bin"
+  become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.unarchive:
+    src: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
+    dest: "{{ crc_bin_dir }}"
+    remote_src: true
+    exclude:
+      - "README.md"
+
+- name: "{{ crc_mode }} | binaries | ocp | check installed"
+  become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.command: "{{ crc_bin_dir }}/oc -h"
+  register: __crc_ocp_install_status
+  changed_when: __crc_ocp_install_status.rc != 0
+
+- name: "{{ crc_mode }} | binaries | kubectl | check installed"
+  become: true
+  become_user: "{{ crc_user_owner }}"
+  become_method: community.general.machinectl
+  become_exe: "sudo machinectl"
+  when:
+    - not ansible_check_mode
+    - crc_state == 'present'
+  ansible.builtin.command: "{{ crc_bin_dir }}/kubectl"
+  register: __crc_kubectl_install_status
+  changed_when: __crc_kubectl_install_status.rc != 0
