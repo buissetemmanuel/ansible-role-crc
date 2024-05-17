@@ -14,10 +14,10 @@ crc_directories: []
 crc_config_nameserver: 1.1.1.1
 
 # if not define, take maximum of VM
-#crc_config_cpus: 6
+# crc_config_cpus: 6
 
 # if not define, take maximum of VM
-#crc_config_memory: 12288
+# crc_config_memory: 12288
 
 crc_config_pull_secret_file: "putYourownpullsecret"
 

@@ -44,7 +44,7 @@
   ansible.builtin.systemd:
     name: NetworkManager
     state: restarted
-    enabled: yes
+    enabled: true
 
 - name: "{{ crc_mode }} | crc | copying over pull-secret.txt"
   become: true
@@ -75,6 +75,8 @@
     {{ crc_bin_dir }}/crc config set memory {{ crc_config_memory if crc_config_memory is defined else ansible_memtotal_mb }} | tee {{ crc_logs_dir }}/setup_status.log
     {{ crc_bin_dir }}/crc config set pull-secret-file {{ crc_pull_secret_path }} | tee {{ crc_logs_dir }}/setup_status.log
     {{ crc_bin_dir }}/crc setup | tee {{ crc_logs_dir }}/setup_status.log
+  register: __crc_setup_status
+  changed_when: __crc_setup_status.rc != 0
 
 - name: "{{ crc_mode }} | crc | start CodeReady Deployment"
   become: true
@@ -87,6 +89,8 @@
   ansible.builtin.shell: |
     set -o pipefail
     {{ crc_bin_dir }}/crc start --log-level {{ crc_log_level }} | tee {{ crc_logs_dir }}/install_status.log
+  register: __crc_setup_status
+  changed_when: __crc_setup_status.rc != 0
 
 - name: "{{ crc_mode }} | crc | delete CodeReady Deployment"
   become: true
@@ -99,6 +103,8 @@
   ansible.builtin.shell: |
     set -o pipefail
     {{ crc_bin_dir }}/crc delete --force | tee {{ crc_logs_dir }}/delete_status.log
+  register: __crc_delete_status
+  changed_when: __crc_delete_status.rc != 0
 
 - name: "{{ crc_mode }} | crc | delete Network CRC"
   become: true
@@ -109,6 +115,8 @@
     set -o pipefail
     virsh net-destroy crc | tee {{ crc_logs_dir }}/delete_status.log
     virsh net-undefine crc | tee {{ crc_logs_dir }}/delete_status.log
+  register: __crc_virsh_net_status
+  changed_when: __crc_virsh_net_status.rc != 0
 
 - name: "{{ crc_mode }} | crc | delete pool CRC"
   become: true
@@ -119,3 +127,5 @@
     set -o pipefail
     virsh pool-destroy crc | tee {{ crc_logs_dir }}/delete_status.log
     virsh pool-undefine crc | tee {{ crc_logs_dir }}/delete_status.log
+  register: __crc_virsh_pool_status
+  changed_when: __crc_virsh_pool_status.rc != 0

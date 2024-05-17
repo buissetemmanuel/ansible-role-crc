@@ -21,7 +21,7 @@
   ansible.builtin.unarchive:
     src: "{{ crc_tmp_dir }}/{{ crc_download_file_name }}"
     dest: "{{ crc_tmp_dir }}"
-    remote_src: yes
+    remote_src: true
     owner: "{{ crc_user_owner }}"
     group: "{{ crc_user_group }}"
 
@@ -74,7 +74,7 @@
   ansible.builtin.unarchive:
     src: "{{ crc_tmp_dir }}/{{ crc_ocp_download_file_name }}"
     dest: "{{ crc_bin_dir }}"
-    remote_src: yes
+    remote_src: true
     exclude:
       - "README.md"
 
